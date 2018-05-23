@@ -28,9 +28,8 @@ class MyParser:
 		parenthesi = plex.Any('()')
 
 		keyword = plex.Str('print')
+		AndOrOp = plex.Str('and','or')
 		NotOp = plex.Str('not')
-		AndOp = plex.Str('and')
-		OrOp = plex.Str('or')
 		
 		BoolTrue = plex.NoCase(plex.Str('true','t','1'))
 		BoolFalse = plex.NoCase(plex.Str('false','f','0'))
@@ -41,9 +40,8 @@ class MyParser:
 		lexicon = plex.Lexicon([
 			(keyword,plex.TEXT),
 			(space,plex.IGNORE),
-			(NotOp,'NOT'),
-			(AndOp,'AND'),
-			(OrOp,'OR'),
+			(NotOp,plex.TEXT),
+			(AndOrOp,plex.TEXT),
 			(BoolTrue,'TRUE'),
 			(BoolFalse,'FALSE'),
 			(parenthesi,plex.TEXT),
@@ -90,8 +88,8 @@ class MyParser:
 
 	def Stmt_list(self):
 		if self.la == 'IDENTIFIER' or self.la == 'print':
-			self.stmt()
-			self.stmt_list()
+			self.Stmt()
+			self.Stmt_list()
 		elif self.la is	None:
 			return
 		else:
@@ -103,10 +101,10 @@ class MyParser:
 		if self.la == 'IDENTIFIER':
 				self.match('IDENTIFIER')
 				self.match('=')
-				self.expr()
+				self.Expr()
 		elif self.la == 'print':		
 				self.match('print')
-				self.expr()
+				self.Expr()
 		else:
 				raise ParseError('waiting for identifier or print')
 	def Expr(self):
