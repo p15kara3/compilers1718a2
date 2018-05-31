@@ -1,4 +1,3 @@
-
 import plex
 
 
@@ -144,7 +143,7 @@ class MyParser:
 	def Factor(self):
 		if self.la =='(':
 				self.match('(')
-				self.expr()
+				self.Expr()
 				self.match(')')
 		elif self.la =='IDENTIFIER':
 				self.match('IDENTIFIER')
@@ -161,7 +160,7 @@ class MyParser:
 				self.match('or')
 		else:
 				raise ParseError('waiting and-or')
-	def multop(self):
+	def NotOp(self):
 		if self.la == 'not':
 				self.match('not')
 		else:
@@ -179,4 +178,3 @@ with open('test1.txt') as fp:
 		parser.parse(fp)
 	except ParseError as perr:
 		print(perr)
-
